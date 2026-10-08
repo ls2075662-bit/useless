@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<!-- 'user-scalable=no' e 'touch-action: none' impedem zoom acidental e rolagem ao tentar tocar na imagem -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Imagem em movimento</title>
+<style>
+  html, body { 
+    margin: 0; 
+    height: 100%; 
+    width: 100%;
+    overflow: hidden; 
+    background: #fff; 
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+    touch-action: none;
+  }
+
+  #btn {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 120px; /* Ajuste a largura desejada para sua imagem */
+    height: auto;
+    cursor: grab;
+    /* Impede que o navegador tente "arrastar" a imagem nativamente ao clicar */
+    -webkit-user-drag: none;
+    user-drag: none;
+  }
+
+  #btn:active {
+    cursor: grabbing;
+  }
+</style>
+</head>
+<body>
+
+<img id="btn" src="https://media.tenor.com/Jojpr9QgMLoAAAAM/maxwell-maxwell-spin.gif" alt="Elemento interativo">
+
+<script>
+  const btn = document.getElementById('btn');
+  
+  let maxX = 0;
+  let maxY = 0;
+  let x = 0;
+  let y = 0;
+  
+  const multiplicadorVelocidade = 2; 
+
+  let vx = 3 * multiplicadorVelocidade; 
+  let vy = 2.5 * multiplicadorVelocidade; 
+  let last = performance.now();
+
+  // Variáveis para controle do arraste (Drag & Drop)
+  let isDragging = false;
+  let dragOffsetX = 0;
+  let dragOffsetY = 0;
+  let lastMouseX = 0;
+  let lastMouseY = 0;
+  let lastMoveTime = 0;
+
+  function atualizarLimites() {
+    maxX = Math.max(0, window.innerWidth - btn.offsetWidth);
+    maxY = Math.max(0, window.innerHeight - btn.offsetHeight);
+  }
+
+  function frame(now) {
+    const dt = Math.min((now - last) / 16.667, 3);
+    last = now;
+
+    atualizarLimites();
+
+    // Só movimenta automaticamente se o usuário NÃO estiver arrastando
+    if (!isDragging) {
+      x += vx * dt;
+      y += vy * dt;
+
+      // Colisões com as bordas da tela
+      if (x <= 0)     { x = 0;    vx =  Math.abs(vx); }
+      if (x >= maxX)  { x = maxX; vx = -Math.abs(vx); }
+      if (y <= 0)     { y = 0;    vy =  Math.abs(vy); }
+      if (y >= maxY)  { y = maxY; vy = -Math.abs(vy); }
+    }
+
+    btn.style.transform = `translate3d(${x}px, ${y}px, 0)`;
+    requestAnimationFrame(frame);
+  }
+
+  function iniciar() {
+    atualizarLimites();
+    x = Math.random() * (maxX || 100);
+    y = Math.random() * (maxY || 100);
+    requestAnimationFrame(frame);
+  }
+
+  if (btn.complete) {
+    iniciar();
+  } else {
+    btn.addEventListener('load', iniciar);
+  }
+
+  window.addEventListener('resize', () => {
+    atualizarLimites();
+    x = Math.min(x, Math.max(0, maxX));
+    y = Math.min(y, Math.max(0, maxY));
+  });
+
+  // --- arrastar e arremessar
+
+  function startDrag(e) {
+    isDragging = true;
+    
+    btn.setPointerCapture(e.pointerId);
+
+    dragOffsetX = e.clientX - x;
+    dragOffsetY = e.clientY - y;
+
+    lastMouseX = e.clientX;
+    lastMouseY = e.clientY;
+    lastMoveTime = performance.now();
+  }
+
+  function onDrag(e) {
+    if (!isDragging) return;
+
+    atualizarLimites();
+
+    let newX = e.clientX - dragOffsetX;
+    let newY = e.clientY - dragOffsetY;
+
+    x = Math.max(0, Math.min(newX, maxX));
+    y = Math.max(0, Math.min(newY, maxY));
+
+    const now = performance.now();
+    const dt = (now - lastMoveTime) / 16.667;
+    
+    if (dt > 0) {
+      const dx = e.clientX - lastMouseX;
+      const dy = e.clientY - lastMouseY;
+      
+      if (Math.hypot(dx, dy) > 1) {
+        vx = dx / dt;
+        vy = dy / dt;
+      }
+      
+      lastMouseX = e.clientX;
+      lastMouseY = e.clientY;
+      lastMoveTime = now;
+    }
+  }
+
+  function stopDrag(e) {
+    if (!isDragging) return;
+    isDragging = false;
+    
+    try {
+      btn.releasePointerCapture(e.pointerId);
+    } catch (err) {}
+
+    const velocidadeMinima = 5 * multiplicadorVelocidade;
+    const velocidadeAtual = Math.hypot(vx, vy);
+
+    if (velocidadeAtual < 2) {
+      const angulo = Math.random() * Math.PI * 2;
+      vx = Math.cos(angulo) * velocidadeMinima;
+      vy = Math.sin(angulo) * velocidadeMinima;
+    }
+  }
+
+  btn.addEventListener('pointerdown', startDrag);
+  window.addEventListener('pointermove', onDrag);
+  window.addEventListener('pointerup', stopDrag);
+  window.addEventListener('pointercancel', stopDrag);
+</script>
+</body>
+</html>

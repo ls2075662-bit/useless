@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<!-- 'user-scalable=no' e 'touch-action: none' impedem zoom acidental e rolagem ao tentar tocar no botão -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Clique aqui</title>
+<style>
+  html, body { 
+    margin: 0; 
+    height: 100%; 
+    width: 100%;
+    overflow: hidden; 
+    background: #fff; 
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+    touch-action: none;
+  }
+
+  #btn:active { 
+    background: #e63946; 
+  }
+
+</style>
+</head>
+<body>
+
+<button id="btn">Clique aqui</button>
+
+<script>
+  const btn = document.getElementById('btn');
+  
+  let maxX = Math.max(0, window.innerWidth - btn.offsetWidth);
+  let maxY = Math.max(0, window.innerHeight - btn.offsetHeight);
+  let x = Math.random() * (maxX || 100);
+  let y = Math.random() * (maxY || 100);
+  
+  const multiplicadorVelocidade = 2; 
+
+  let vx = 4 * multiplicadorVelocidade; 
+  let vy = 3.5 * multiplicadorVelocidade; 
+  let last = performance.now();
+
+  function frame(now) {
+    const dt = Math.min((now - last) / 16.667, 3);
+    last = now;
+
+    maxX = window.innerWidth - btn.offsetWidth;
+    maxY = window.innerHeight - btn.offsetHeight;
+
+    x += vx * dt;
+    y += vy * dt;
+
+    if (x <= 0)     { x = 0;    vx =  Math.abs(vx); }
+    if (x >= maxX)  { x = maxX; vx = -Math.abs(vx); }
+    if (y <= 0)     { y = 0;    vy =  Math.abs(vy); }
+    if (y >= maxY)  { y = maxY; vy = -Math.abs(vy); }
+
+    btn.style.transform = `translate3d(${x}px, ${y}px, 0)`;
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+
+  window.addEventListener('resize', () => {
+    maxX = window.innerWidth - btn.offsetWidth;
+    maxY = window.innerHeight - btn.offsetHeight;
+    x = Math.min(x, Math.max(0, maxX));
+    y = Math.min(y, Math.max(0, maxY));
+  });
+
+  function redirecionar(e) {
+    e.preventDefault();
+    window.location.href = 'imagem.html';
+  }
+
+  btn.addEventListener('pointerdown', redirecionar);
+</script>
+</body>
+</html>

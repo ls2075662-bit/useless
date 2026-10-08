@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Data e Hora em Tempo Real</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background-color: #0f172a;
+      color: #f8fafc;
+    }
+
+    .clock-card {
+      background-color: #1e293b;
+      padding: 2.5rem 3rem;
+      border-radius: 1rem;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+      text-align: center;
+      border: 1px solid #334155;
+      min-width: 320px;
+    }
+
+    .day-of-week {
+      font-size: 1.25rem;
+      text-transform: capitalize;
+      color: #38bdf8;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.25rem;
+    }
+
+    .full-date {
+      font-size: 1.1rem;
+      color: #94a3b8;
+      margin-bottom: 1.5rem;
+    }
+
+    .time-display {
+      font-size: 3.5rem;
+      font-weight: 700;
+      font-family: 'Courier New', Courier, monospace;
+      color: #f1f5f9;
+      letter-spacing: 0.05em;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="clock-card">
+    <div id="day-of-week" class="day-of-week">---</div>
+    <div id="full-date" class="full-date">--/--/----</div>
+    <div id="time-display" class="time-display">00:00:00</div>
+  </div>
+
+  <script>
+    function updateClock() {
+      const now = new Date();
+
+      // Dia da semana (ex: quarta-feira)
+      const dayName = now.toLocaleDateString('pt-BR', { weekday: 'long' });
+
+      // Data formatada (DD/MM/YYYY)
+      const day = String(now.getDate()).padStart(2, '0');
+      const month = String(now.getMonth() + 1).padStart(2, '0');
+      const year = now.getFullYear();
+      const dateString = `${day}/${month}/${year}`;
+
+      // Hora, minutos e segundos (HH:MM:SS)
+      const hours = String(now.getHours()).padStart(2, '0');
+      const minutes = String(now.getMinutes()).padStart(2, '0');
+      const seconds = String(now.getSeconds()).padStart(2, '0');
+      const timeString = `${hours}:${minutes}:${seconds}`;
+
+      // Atualiza o HTML
+      document.getElementById('day-of-week').textContent = dayName;
+      document.getElementById('full-date').textContent = dateString;
+      document.getElementById('time-display').textContent = timeString;
+    }
+
+    // Executa a função imediatamente ao carregar
+    updateClock();
+
+    // Atualiza a cada 1 segundo (1000ms)
+    setInterval(updateClock, 1000);
+  </script>
+
+</body>
+</html>

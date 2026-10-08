@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="icon.ico" type="image/x-icon">
+    <title>Snake</title>
+    <style>
+        body {
+          background-color: #111;
+          color: #fff;
+          font-family: sans-serif;
+          text-align: center;
+          margin: 0;
+          padding: 0;
+          
+        }
+    
+    
+        h1 {
+          margin-top: 20px;
+        }
+    
+    
+        canvas {
+          background-color: #222;
+          display: block;
+          margin: 20px auto;
+          border: 2px solid #555;
+        }
+    
+    
+        button {
+          margin-top: 10px;
+          padding: 10px 20px;
+          font-size: 16px;
+          background: #444;
+          color: #fff;
+          border: none;
+          cursor: pointer;
+          border-radius: 5px;
+        }
+    
+    
+        button:hover {
+          background: #666;
+        }
+      </style>
+</head>
+<body>
+    <h1>🐍 Snake Game</h1>
+  <canvas id="game" width="400" height="400"></canvas>
+  <button onclick="startGame()">Reiniciar Jogo</button>
+  <script>
+    const canvas = document.getElementById("game");
+    const ctx = canvas.getContext("2d");
+
+    const box = 20;
+    const canvasSize = 400;
+    const rows = canvasSize / box;
+    const cols = canvasSize / box;
+
+    let snake, food, direction, gameInterval, score;
+
+    function startGame() {
+      snake = [{ x: 9 * box, y: 9 * box }];
+      direction = "RIGHT";
+      score = 0;
+      generateFood();
+
+      if (gameInterval) clearInterval(gameInterval);
+      gameInterval = setInterval(drawGame, 100);
+    }
+
+    function generateFood() {
+      food = {
+        x: Math.floor(Math.random() * cols) * box,
+        y: Math.floor(Math.random() * rows) * box
+      };
+    }
+
+    document.addEventListener("keydown", event => {
+      const key = event.key;
+      if ((key === "ArrowLeft" || key === "a") && direction !== "RIGHT") direction = "LEFT";
+      else if ((key === "ArrowUp" || key === "w") && direction !== "DOWN") direction = "UP";
+      else if ((key === "ArrowRight" || key === "d") && direction !== "LEFT") direction = "RIGHT";
+      else if ((key === "ArrowDown" || key === "s") && direction !== "UP") direction = "DOWN";});
+
+      function drawGame() {
+      ctx.clearRect(0, 0, canvasSize, canvasSize);
+
+      //cobrinha
+      for (let i = 0; i < snake.length; i++) {
+        ctx.fillStyle = i === 0 ? "#0f0" : "#0a0";
+        ctx.fillRect(snake[i].x, snake[i].y, box, box);
+      }
+
+      //comida
+      ctx.fillStyle = "#f00";
+      ctx.fillRect(food.x, food.y, box, box);
+
+      // Atualizar posicao da cobrinha
+      let head = { ...snake[0] };
+
+      if (direction === "LEFT") head.x -= box;
+      else if (direction === "RIGHT") head.x += box;
+      else if (direction === "UP") head.y -= box;
+      else if (direction === "DOWN") head.y += box;
+
+      // Colisão com paredes
+      if (
+        head.x < 0 || head.x >= canvasSize ||
+        head.y < 0 || head.y >= canvasSize ||
+        collision(head, snake)
+      ) {
+        clearInterval(gameInterval);
+        alert("💀 Fim de jogo! Pontuação: " + score);
+        return;
+      }
+
+      snake.unshift(head);
+
+      // Comer a comida
+      if (head.x === food.x && head.y === food.y) {
+        score++;
+        generateFood();
+      } else {
+        snake.pop();
+      }
+    }
+    
+    function collision(head, body) {
+      return body.slice(1).some(part => part.x === head.x && part.y === head.y);
+    }
+
+    // Iniciar automaticamente
+    startGame();
+  </script>
+    <br>
+    <br>
+
+    <form action="inicio-acesse o site.html">
+      <p><input type="submit" value="pagina inicial"></p>
+    </form>
+</body>
+</html>

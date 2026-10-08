@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="icon.ico" type="image/x-icon">
+    <title>login-acessar site</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <h1 style="text-align: center;">acesse o site!</h1>
+    <h4 style="text-align: center;">login</h4>
+    <form action="site acessado-pagina.html" method="post" autocomplete="off">
+        <div style="text-align: center;">
+            <label for="email">email</label>
+            <br>
+            <input type="email" id="email" id="email">
+        </div>
+        <div style="text-align: center;">
+            <label for="password">senha</label>
+            <br>
+            <input type="password" id="password" id="password">
+        </div>
+        <br>
+        <!--<a href="site acessado.html" target="_blank"><button>entrar</button></a>-->
+        <div class="button" style="text-align: center;">
+            <p><input type="submit" value="login"></p>
+            <!--<button type="submit">login</button>
+            <button><a href="site acessado-pagina.html">entrar</a></button>-->
+        </div>
+    </form>
+    <script>
+        function validarLogin(event) {
+            event.preventDefault();
+            const email = document.getElementById('email').value;
+            const senha = document.getElementById('password').value;
+
+            if (email === "admin@site.com" && senha === "1234"){
+                localStorage.setItem("logado","true");
+                window.location.href = "site acessado-pagina.html";
+            } else {
+                alert("email ou senha incorretos.");
+            }
+        }
+    </script>
+    <br>
+    <br>
+    <h1>primeira vez acessando?</h1>
+    <h4>realize seu cadastro!</h4>
+    <form action="registro.html" style="text-align: center;">
+        <p><input type="submit" value="cadastro"></p>
+    </form>
+</body>
+</html>
