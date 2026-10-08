@@ -61,7 +61,7 @@
 <body>
 
   <div class="clock-card">
-    <img src="https://i.redd.it/l5zf03th3uhf1.gif" alt="Imagem" class="clock-image">
+    <img src="https://i.pinimg.com/originals/b2/58/85/b258854e249c5d4673a5938b90b6bbf5.gif" alt="Imagem" class="clock-image">
     <div id="day-of-week" class="day-of-week">---</div>
     <div id="full-date" class="full-date">--/--/----</div>
     <div id="time-display" class="time-display">00:00:00</div>
@@ -93,15 +93,30 @@
 
           // ===== MUDA A IMAGEM A PARTIR DAS 19:00 =====
       const img = document.querySelector('.clock-image');
+      const currentHour = now.getHours();
+      const currentMinute = now.getMinutes();
 
-      if (now.getHours() >= 19) {
-        // Imagem depois das 19h
+      if (currentHour >= 0 && currentHour < 4) {
+        // Imagem entre 00:00h e 03:59h
+        img.src = "https://mir-s3-cdn-cf.behance.net/project_modules/1400/dece5f124024167.60fb03546918b.gif";
+      } else if(currentHour === 16 && currentMinute < 30){
+        // Imagem entre 16:00h e 16:29h
+        img.src = "https://64.media.tumblr.com/d1a531b5e2360e705b38f208513ba98e/f90870c81fc18ced-b1/s1280x1920/63f1b83102373ffa703b8b42052d4bcaca42bac3.gif";
+      } else if(currentHour === 16 && currentMinute >= 30){
+        // Tarde (2ª parte): 16:30h às 16:59h
+        img.src = "https://64.media.tumblr.com/3404c30786d69d915e3f11e1d2fa7fab/f90870c81fc18ced-52/s500x750/1fb792adef06196a0982e244d298ec1e784e7df3.gifv";
+      }
+      
+        else if (currentHour === 17) {
+        // Imagem entre 17:00h e 17:59h
+        img.src = "https://64.media.tumblr.com/32a119c83f1489f8d19b0f115015a948/675ea272e1286b0d-83/s1280x1920/0fe4252090513b39fdda7f045fae1ec0f9be6a24.gif";
+      } else if (currentHour >= 19) {
+        // Imagem das 19:00h às 23:59h
         img.src = "https://i.pinimg.com/originals/e4/c3/9a/e4c39a73c1d9f9d32ca69f9ea0783c66.gif";
       } else {
-        // Imagem normal (antes das 19h)
-        img.src = "https://i.redd.it/l5zf03th3uhf1.gif";
+        // Imagem padrão (das 04:00h às 16:59h e das 18:00h às 18:59h)
+        img.src = "https://i.pinimg.com/originals/b2/58/85/b258854e249c5d4673a5938b90b6bbf5.gif";
       }
-
       // Atualiza o HTML
       document.getElementById('day-of-week').textContent = dayName;
       document.getElementById('full-date').textContent = dateString;
