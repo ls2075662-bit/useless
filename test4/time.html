@@ -21,6 +21,19 @@
       background-color: #fff;
       color: #f8fafc;
     }
+
+    .clock-card{
+      text-align: center;
+    }
+
+    .clock-image {
+      display: block;
+      width: 115px;          /* ajuste o tamanho como quiser */
+      height: auto;
+      margin: 0 auto 1.1rem; /* centraliza e dá espaço embaixo */
+      border-radius: 0px;    /* opcional: bordas arredondadas */
+    }
+
     .day-of-week {
       font-size: 1.0rem;
       
@@ -31,17 +44,16 @@
     }
 
     .full-date {
-      font-size: 1.2rem;
+      font-size: 1.0rem;
       color: #000;
-      margin-bottom: 0.4rem;
+      margin-bottom: 0.25rem;
       
     }
 
     .time-display {
-      font-size: 1.1rem;
-      font-weight: 600;
-      font-family: 'Courier New', Courier, monospace;
+      font-size: 1.0rem;
       color: #000;
+      margin-bottom: 0.25rem;
       letter-spacing: 0.10em;
     }
   </style>
@@ -49,6 +61,7 @@
 <body>
 
   <div class="clock-card">
+    <img src="https://i.redd.it/l5zf03th3uhf1.gif" alt="Imagem" class="clock-image">
     <div id="day-of-week" class="day-of-week">---</div>
     <div id="full-date" class="full-date">--/--/----</div>
     <div id="time-display" class="time-display">00:00:00</div>
