@@ -86,6 +86,22 @@
       const seconds = String(now.getSeconds()).padStart(2, '0');
       const timeString = `${hours}:${minutes}:${seconds}`;
 
+      // Atualiza textos
+      document.getElementById('day-of-week').textContent = dayName;
+      document.getElementById('full-date').textContent = dateString;
+      document.getElementById('time-display').textContent = timeString;
+
+          // ===== MUDA A IMAGEM A PARTIR DAS 19:00 =====
+      const img = document.querySelector('.clock-image');
+
+      if (now.getHours() >= 19) {
+        // Imagem depois das 19h
+        img.src = "https://i.pinimg.com/originals/e4/c3/9a/e4c39a73c1d9f9d32ca69f9ea0783c66.gif";
+      } else {
+        // Imagem normal (antes das 19h)
+        img.src = "https://i.redd.it/l5zf03th3uhf1.gif";
+      }
+
       // Atualiza o HTML
       document.getElementById('day-of-week').textContent = dayName;
       document.getElementById('full-date').textContent = dateString;
