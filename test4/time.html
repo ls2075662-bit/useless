@@ -13,8 +13,14 @@
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
 
+    html, body{
+      height: 100%;
+      margin: 0;
+    }
+
     body {
       display: flex;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
       min-height: 100vh;
@@ -28,7 +34,7 @@
 
     .clock-image {
       display: block;
-      width: 132px;          /* ajuste o tamanho como quiser */
+      width: 136px;          /* ajuste o tamanho como quiser */
       height: auto;
       margin: 0 auto 1.1rem; /* centraliza e dá espaço embaixo */
       border-radius: 0px;    /* opcional: bordas arredondadas */
@@ -107,7 +113,7 @@
       else if(currentHour === 10){
         img.src = "https://static-madeinjapan.s3.amazonaws.com/wp-content/uploads/2015/09/pixelart_tumblr_1041uuu_cofeeshop.gif";
       }
-      else if(currentHour === 11){
+      else if(currentHour === 11 && currentMinute === 30){
         img.src = "https://images.squarespace-cdn.com/content/v1/5f33a6ef30df3b10ae65164a/1597229119461-B2BTZCKNAZ0NUJSQ1HRV/dbe6d5c5-d5db-454a-91cb-e282c299ba1c.gif";
       }
       
@@ -142,5 +148,8 @@
     setInterval(updateClock, 1000);
   </script>
 
+<footer style="color: #000;">
+  <p>&copy; by luannslv2</p>
+</footer>
 </body>
 </html>
