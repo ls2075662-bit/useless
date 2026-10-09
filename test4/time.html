@@ -28,7 +28,7 @@
 
     .clock-image {
       display: block;
-      width: 118px;          /* ajuste o tamanho como quiser */
+      width: 132px;          /* ajuste o tamanho como quiser */
       height: auto;
       margin: 0 auto 1.1rem; /* centraliza e dá espaço embaixo */
       border-radius: 0px;    /* opcional: bordas arredondadas */
@@ -99,7 +99,19 @@
       if (currentHour >= 0 && currentHour < 4) {
         // Imagem entre 00:00h e 03:59h
         img.src = "https://mir-s3-cdn-cf.behance.net/project_modules/1400/dece5f124024167.60fb03546918b.gif";
-      } else if(currentHour === 16 && currentMinute < 30){
+      } 
+      else if(currentHour === 5 && currentMinute >= 30){
+        img.src = "https://i.pinimg.com/originals/84/b3/76/84b376dae4da28a2887f5ebad8671f9a.gif";
+      }
+
+      else if(currentHour === 10){
+        img.src = "https://static-madeinjapan.s3.amazonaws.com/wp-content/uploads/2015/09/pixelart_tumblr_1041uuu_cofeeshop.gif";
+      }
+      else if(currentHour === 11){
+        img.src = "https://images.squarespace-cdn.com/content/v1/5f33a6ef30df3b10ae65164a/1597229119461-B2BTZCKNAZ0NUJSQ1HRV/dbe6d5c5-d5db-454a-91cb-e282c299ba1c.gif";
+      }
+      
+        else if(currentHour === 16 && currentMinute < 30){
         // Imagem entre 16:00h e 16:29h
         img.src = "https://64.media.tumblr.com/d1a531b5e2360e705b38f208513ba98e/f90870c81fc18ced-b1/s1280x1920/63f1b83102373ffa703b8b42052d4bcaca42bac3.gif";
       } else if(currentHour === 16 && currentMinute >= 30){
