@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aero OS - Tela de Login</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Segoe UI style -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="h-full flex items-center justify-center relative select-none">
+
+    <!-- Interactive Canvas Bubbles Background -->
+    <canvas id="bubbleCanvas" class="absolute inset-0 z-0 pointer-events-auto"></canvas>
+
+    <!-- Sun Flare & Grass Environment Elements -->
+    <div class="sun-flare z-0"></div>
+    <div class="grass-hill z-0"></div>
+
+    <!-- Central Aero Login Card -->
+    <main class="relative z-10 w-full max-w-sm px-4 my-6">
+        <div class="aero-card p-6 text-center">
+            
+            <!-- Vista Window Top Bar -->
+            <div class="flex items-center justify-between pb-3.5 mb-4 border-b border-white/40">
+                <div class="flex items-center gap-2">
+                    <div class="w-5 h-5 rounded-full bg-gradient-to-tr from-cyan-400 to-blue-600 flex items-center justify-center border border-white shadow-sm">
+                        <i class="fa-solid fa-droplet text-[9px] text-white"></i>
+                    </div>
+                    <span class="text-xs font-bold text-sky-950 tracking-wide drop-shadow-[0_1px_0_rgba(255,255,255,0.8)]">
+                        Aero<span class="font-normal text-sky-800">OS Login</span>
+                    </span>
+                </div>
+                <div class="flex gap-1.5">
+                    <span class="w-3 h-3 rounded-full bg-amber-400/80 border border-white shadow-sm"></span>
+                    <span class="w-3 h-3 rounded-full bg-emerald-400/80 border border-white shadow-sm"></span>
+                </div>
+            </div>
+
+            <!-- Avatar Sphere Container -->
+            <div class="flex flex-col items-center gap-2.5 mb-4">
+                
+                <!-- Glossy Sphere Avatar Frame -->
+                <div id="userSphere" class="user-sphere flex items-center justify-center group" title="Clique para alterar a foto">
+                    
+                    <!-- User Uploaded Image (Hidden initially) -->
+                    <img id="avatarImg" src="" alt="Foto de perfil" class="hidden w-full h-full object-cover rounded-full">
+                    
+                    <!-- Default System Icon -->
+                    <div id="defaultAvatarIcon" class="flex items-center justify-center">
+                        <i class="fa-solid fa-user text-4xl text-sky-900/75 drop-shadow-[0_1px_0_rgba(255,255,255,0.8)]"></i>
+                    </div>
+
+                    <!-- Hover Badge Overlay -->
+                    <div class="sphere-hover-badge">
+                        <i class="fa-solid fa-camera text-white text-lg drop-shadow"></i>
+                    </div>
+
+                    <!-- Frutiger Aero Gloss Specular Sheen (Always on top) -->
+                    <div class="user-sphere-sheen"></div>
+                </div>
+
+                <!-- Hidden Native File Input -->
+                <input type="file" id="avatarInput" accept="image/*" class="hidden">
+
+                <!-- Avatar Action Buttons -->
+                <div class="flex items-center gap-2">
+                    <button type="button" id="btnChangePhoto" class="btn-avatar-action flex items-center gap-1.5">
+                        <i class="fa-solid fa-image text-[10px]"></i>
+                        <span>Alterar foto</span>
+                    </button>
+                    
+                    <button type="button" id="btnRemovePhoto" class="btn-avatar-action btn-avatar-remove hidden flex items-center gap-1.5">
+                        <i class="fa-solid fa-trash-can text-[10px]"></i>
+                        <span>Remover</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Title Header -->
+            <h1 class="text-xl font-bold text-sky-950 drop-shadow-[0_1px_0_rgba(255,255,255,0.8)] mb-0.5">
+                Bem-vindo
+            </h1>
+            <p class="text-xs text-sky-900/80 font-medium mb-4">
+                Digite suas credenciais para acessar
+            </p>
+
+            <!-- Login Form -->
+            <form id="loginForm" onsubmit="handleLogin(event)" class="space-y-3.5 text-left">
+                
+                <!-- Input: Username -->
+                <div>
+                    <label class="block text-[11px] font-bold text-sky-950 mb-1 ml-0.5 drop-shadow-[0_1px_0_rgba(255,255,255,0.8)]">
+                        Usuário ou E-mail
+                    </label>
+                    <div class="relative">
+                        <i class="fa-solid fa-envelope absolute left-3 top-1/2 -translate-y-1/2 text-sky-700/60 text-xs"></i>
+                        <input 
+                            type="text" 
+                            id="username"
+                            required
+                            value="usuario@aero.com"
+                            placeholder="seu.email@aero.com"
+                            class="aero-input w-full pl-9 pr-3 py-2 rounded-xl text-xs font-medium"
+                        >
+                    </div>
+                </div>
+
+                <!-- Input: Password -->
+                <div>
+                    <div class="flex justify-between items-center mb-1 ml-0.5">
+                        <label class="text-[11px] font-bold text-sky-950 drop-shadow-[0_1px_0_rgba(255,255,255,0.8)]">
+                            Senha
+                        </label>
+                        <button 
+                            type="button" 
+                            onclick="forgotPassword()" 
+                            class="text-[10px] font-semibold text-blue-900 hover:underline cursor-pointer"
+                        >
+                            Esqueceu?
+                        </button>
+                    </div>
+                    <div class="relative">
+                        <i class="fa-solid fa-lock absolute left-3 top-1/2 -translate-y-1/2 text-sky-700/60 text-xs"></i>
+                        <input 
+                            type="password" 
+                            id="password"
+                            required
+                            value="123456"
+                            placeholder="••••••••"
+                            class="aero-input w-full pl-9 pr-8 py-2 rounded-xl text-xs font-medium"
+                        >
+                        <button 
+                            type="button" 
+                            onclick="togglePassword()"
+                            class="absolute right-2.5 top-1/2 -translate-y-1/2 text-sky-800/70 hover:text-sky-950 text-xs p-1"
+                        >
+                            <i id="eyeIcon" class="fa-solid fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Checkbox: Remember -->
+                <div class="flex items-center gap-2 pt-0.5">
+                    <input type="checkbox" id="remember" checked class="w-3.5 h-3.5 accent-blue-600 rounded cursor-pointer">
+                    <label for="remember" class="text-[11px] font-semibold text-sky-950 cursor-pointer drop-shadow-[0_1px_0_rgba(255,255,255,0.8)]">
+                        Lembrar minha senha
+                    </label>
+                </div>
+
+                <!-- Submit Button -->
+                <button 
+                    type="submit" 
+                    id="submitBtn"
+                    class="btn-aero-gel w-full mt-2 py-2.5 rounded-full text-white text-xs font-bold flex items-center justify-center gap-2 cursor-pointer"
+                >
+                    <span id="btnText">Entrar no Sistema</span>
+                    <i id="btnIcon" class="fa-solid fa-arrow-right text-[10px]"></i>
+                    <div id="btnSpinner" class="hidden w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                </button>
+            </form>
+
+            <!-- Bottom OS Footer -->
+            <div class="mt-5 pt-3 border-t border-white/30 flex items-center justify-between text-[10px] text-sky-950 font-semibold opacity-85">
+                <span class="flex items-center gap-1">
+                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                    Sistema Online
+                </span>
+                <span>AeroOS v1.0</span>
+            </div>
+        </div>
+    </main>
+
+    <!-- Success / Information Glass Toast -->
+    <div id="toast" class="toast-pop fixed bottom-5 right-5 z-50 aero-card p-3.5 max-w-xs flex items-center gap-3">
+        <div id="toastIconBg" class="w-7 h-7 rounded-full bg-gradient-to-tr from-emerald-400 to-green-600 flex items-center justify-center text-white shrink-0 shadow">
+            <i id="toastIcon" class="fa-solid fa-check text-xs"></i>
+        </div>
+        <div>
+            <h4 id="toastTitle" class="text-xs font-bold text-sky-950">Aviso</h4>
+            <p id="toastMessage" class="text-[10px] text-sky-900 font-medium">Operação realizada com sucesso.</p>
+        </div>
+    </div>
+    <script src="js/script.js"></script>
+</body>
+</html>
